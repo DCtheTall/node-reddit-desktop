@@ -1,0 +1,33 @@
+{
+  "name": "reddit-desktop",
+  "version": "1.0.0",
+  "description": "A web scraper which sets desktop background to a random image from specified subreddits",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DCtheTall/node-reddit-desktop.git"
+  },
+  "keywords": [
+    "reddit",
+    "desktop",
+    "scraper",
+    "web",
+    "osx",
+    "background"
+  ],
+  "author": "Dylan Cutler",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DCtheTall/node-reddit-desktop/issues"
+  },
+  "homepage": "https://github.com/DCtheTall/node-reddit-desktop#readme",
+  "dependencies": {
+    "axios": "^0.18.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.9.0"
+  }
+}
