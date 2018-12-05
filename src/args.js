@@ -1,6 +1,6 @@
 const CACHE = '--cache';
 const EMPTY_CACHE = '--empty-cache';
-const UNDO = 'undo';
+const UNDO = '--undo';
 const OPTIONS = new Set([CACHE, EMPTY_CACHE, UNDO]);
 
 
@@ -32,11 +32,9 @@ function findOptions(args) {
  */
 function parseArguments(args) {
   const opts = findOptions(args);
-  const numOptionsProvided =
-    [...opts].reduce((acc, opt) => acc + opt, 0);
   const subreddits = args.filter(arg => !opts.has(arg));
 
-  if (numOptionsProvided > 1) {
+  if (opts.size > 1) {
     throw new Error(
       `You cannot provide more than one of the following options ${CACHE}, ${EMPTY_CACHE}, and ${UNDO}`);
   }
@@ -58,7 +56,7 @@ function parseArguments(args) {
       throw new Error('You must provide at least one subreddit.');
   }
 
-  return { options, subreddits };
+  return { options: opts, subreddits };
 }
 
 module.exports = {
