@@ -5,32 +5,24 @@ const OPTIONS = new Set([CACHE, EMPTY_CACHE, UNDO]);
 
 
 /**
- * @typedef Options
- * @property CACHE {string}
- * @property EMPTY_CACHE {string}
- * @property UNDO {string}
- */
-
-
-/**
  * @param {Array<string>} arguments
- * @returns {Options} parsed options
+ * @returns {Set<string>} parsed options
  */
 function findOptions(args) {
-  const options = {};
+  const providedOptions = new Set();
   for (let arg of args) {
     if (OPTIONS.has(arg)) {
-      options[arg] = true;
+      providedOptions.add(arg);
     }
   }
-  return options;
+  return providedOptions;
 }
 
 
 /**
  * @typedef ParsedArguments
  * @property subreddits {Array<string>}
- * @property options {Options}
+ * @property options {Set<string>}
  */
 
 
@@ -39,11 +31,34 @@ function findOptions(args) {
  * @returns {ParsedArguments} result of parsing arguments provided
  */
 function parseArguments(args) {
-  const options = findOptions(args);
-  return {
-    options,
-    subreddits: [],
-  };
+  const opts = findOptions(args);
+  const numOptionsProvided =
+    [...opts].reduce((acc, opt) => acc + opt, 0);
+  const subreddits = args.filter(arg => !opts.has(arg));
+
+  if (numOptionsProvided > 1) {
+    throw new Error(
+      `You cannot provide more than one of the following options ${CACHE}, ${EMPTY_CACHE}, and ${UNDO}`);
+  }
+
+  switch (true) {
+    case subreddits.length > 0 && opts.has(EMPTY_CACHE):
+      throw new Error(
+        `You cannot provide any subreddits with the ${EMPTY_CACHE} option.`);
+
+    case subreddits.length > 0 && opts.has(UNDO):
+      throw new Error(
+        `You cannot provide any subreddits with the ${UNDO} option.`);
+
+    case subreddits.length == 0 && opts.has(CACHE):
+      throw new Error(
+        `You must provide at least one subreddit with the ${CACHE} option.`);
+
+    case subreddits.length == 0 && opts.size == 0:
+      throw new Error('You must provide at least one subreddit.');
+  }
+
+  return { options, subreddits };
 }
 
 module.exports = {
