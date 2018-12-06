@@ -25,7 +25,8 @@
   },
   "homepage": "https://github.com/DCtheTall/node-reddit-desktop#readme",
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "htmlparser2": "^3.10.0"
   },
   "devDependencies": {
     "eslint": "^5.9.0"
