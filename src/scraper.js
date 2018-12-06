@@ -6,6 +6,7 @@ const fs = require('fs');
 
 /**
  * @param {string} subreddit to get images from
+ * @returns {Promise<string[]>} names of images scraped from Reddit
  */
 module.exports = async function scrapeSubredditsForImages(subreddit) {
   const { data } = await axios.get(
@@ -31,16 +32,19 @@ module.exports = async function scrapeSubredditsForImages(subreddit) {
   parser.end();
 
   if (!imgUrls.length) {
-    throw new Error('No images to use for background.');
+    throw new Error(
+      'No images to use for background.');
   }
 
   return Promise.all(
     imgUrls.map((url) => {
-      let filename = `${Date.now().toString(36)}${url.slice(-4)}`;
+      const imgName = url.slice(0, -4).split('/').slice(-1)[0];
+      const extension = url.slice(-4);
+      const filename = `${imgName}${extension}`;
       return new Promise(
         resolve =>
           request.get({ url, encoding: null })
             .pipe(fs.createWriteStream(`${__dirname}/../data/${filename}`))
-            .on('close', () => resolve(filename)));
+            .on('close', () => resolve(filename)))
     }));
 }

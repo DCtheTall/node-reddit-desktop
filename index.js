@@ -1,5 +1,6 @@
-const { parseArguments } = require('./src/args');
+const { CACHE, parseArguments } = require('./src/args');
 const scrapeSubredditsForImages = require('./src/scraper');
+const fs = require('fs');
 
 
 (async function main() {
@@ -14,4 +15,8 @@ const scrapeSubredditsForImages = require('./src/scraper');
   const subreddit = subreddits[index];
 
   const filenames = await scrapeSubredditsForImages(subreddit);
+  filenames.map(
+    filename => (
+      (!options.has(CACHE)) &&
+        fs.unlinkSync(`${__dirname}/data/${filename}`)));
 })().catch(console.log);

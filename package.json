@@ -27,6 +27,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "htmlparser2": "^3.10.0",
+    "image-size": "^0.6.3",
     "request": "^2.88.0"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
 const CACHE = '--cache';
 const EMPTY_CACHE = '--empty-cache';
-const UNDO = '--undo';
-const OPTIONS = new Set([CACHE, EMPTY_CACHE, UNDO]);
+const SET_DESKTOP = '--set-desktop';
+const OPTIONS = new Set([CACHE, EMPTY_CACHE, SET_DESKTOP]);
 
 
 /**
@@ -36,7 +36,7 @@ function parseArguments(args) {
 
   if (opts.size > 1) {
     throw new Error(
-      `You cannot provide more than one of the following options ${CACHE}, ${EMPTY_CACHE}, and ${UNDO}`);
+      `You cannot provide more than one of the following options ${CACHE}, ${EMPTY_CACHE}, and ${SET_DESKTOP}`);
   }
 
   switch (true) {
@@ -44,9 +44,9 @@ function parseArguments(args) {
       throw new Error(
         `You cannot provide any subreddits with the ${EMPTY_CACHE} option.`);
 
-    case subreddits.length > 0 && opts.has(UNDO):
+    case subreddits.length > 0 && opts.has(SET_DESKTOP):
       throw new Error(
-        `You cannot provide any subreddits with the ${UNDO} option.`);
+        `You cannot provide any subreddits with the ${SET_DESKTOP} option.`);
 
     case subreddits.length == 0 && opts.has(CACHE):
       throw new Error(
@@ -62,6 +62,6 @@ function parseArguments(args) {
 module.exports = {
   CACHE,
   EMPTY_CACHE,
-  UNDO,
+  SET_DESKTOP,
   parseArguments,
 }
