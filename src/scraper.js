@@ -9,8 +9,12 @@ const fs = require('fs');
  * @returns {Promise<string[]>} names of images scraped from Reddit
  */
 module.exports = async function scrapeSubredditsForImages(subreddit) {
+  console.log('querying Reddit for HTML...');
   const { data } = await axios.get(
     `https://old.reddit.com/r/${subreddit}`);
+  console.log('received HTML.\n');
+
+  console.log('Parsing HTML for image locations...');
   const imgUrls = [];
   const parser = new Parser({
     onopentag(name, attr) {
@@ -35,7 +39,9 @@ module.exports = async function scrapeSubredditsForImages(subreddit) {
     throw new Error(
       'No images to use for background.');
   }
+  console.log('Image locations found.\n')
 
+  console.log('Saving images for setting desktop image...\n');
   return Promise.all(
     imgUrls.map((url) => {
       const imgName = url.slice(0, -4).split('/').slice(-1)[0];
