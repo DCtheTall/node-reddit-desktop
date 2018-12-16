@@ -8,7 +8,14 @@ const fs = require('fs');
   const {
     options,
     subreddits,
+    filepath,
   } = parseArguments(process.argv.slice(2));
+
+  if (filepath) {
+    console.log('Setting desktop image from path...\n');
+    await setDesktopImage([filepath]);
+    return;
+  }
 
   console.log(`Picking random sample from subreddits: ${subreddits.join(', ')}...`);
   const index = Math.floor(Math.random() * subreddits.length);
@@ -16,13 +23,15 @@ const fs = require('fs');
   console.log(`${subreddit} chosen.\n`)
 
   const existingFiles = new Set(...fs.readdirSync(`${__dirname}/data`));
-  let filenames = await scrapeSubredditsForImages(subreddit);
-  filenames = await setDesktopImage(filenames);
+  let imgNames = await scrapeSubredditsForImages(subreddit);
+  imgNames = await setDesktopImage(
+    imgNames.map(fname =>
+      `${__dirname}/data/${fname}`));
   if (!options.has(CACHE)) {
     console.log('Deleting unused images...\n');
-    filenames.map(
-      filename => (
-       ((!existingFiles.has(filename)) &&
-        fs.unlinkSync(`${__dirname}/data/${filename}`))));
+    imgNames.map(
+      imgName => (
+        ((!existingFiles.has(imgName)) &&
+          fs.unlinkSync(`${__dirname}/data/${imgName}`))));
   }
 })().then(() => console.log('Done.')).catch(console.log);
