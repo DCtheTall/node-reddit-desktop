@@ -1,5 +1,6 @@
 const imageSize = require('image-size');
 const wallpaper = require('wallpaper');
+const fs = require('fs');
 
 
 /**
