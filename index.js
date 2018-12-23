@@ -1,5 +1,5 @@
 const { CACHE, parseArguments } = require('./src/args');
-const scrapeSubredditsForImages = require('./src/scraper');
+const scrapeSubredditPageForImages = require('./src/scraper');
 const setDesktopImage = require('./src/desktop');
 const fs = require('fs');
 
@@ -24,7 +24,7 @@ const fs = require('fs');
   console.log(`${subreddit} chosen.\n`)
 
   const existingFiles = new Set(...fs.readdirSync(`${__dirname}/data`));
-  let imgNames = await scrapeSubredditsForImages(subreddit);
+  let imgNames = await scrapeSubredditPageForImages(subreddit);
   imgNames = await setDesktopImage(
       imgNames.map(fname => `${__dirname}/data/${fname}`));
   if (!options.has(CACHE)) {
