@@ -11,7 +11,7 @@ const fs = require('fs');
 module.exports = async function scrapeSubredditsForImages(subreddit) {
   console.log('querying Reddit for HTML...');
   const { data } = await axios.get(
-    `https://old.reddit.com/r/${subreddit}`);
+      `https://old.reddit.com/r/${subreddit}`);
   console.log('received HTML.\n');
 
   console.log('Parsing HTML for image locations...');
@@ -25,7 +25,7 @@ module.exports = async function scrapeSubredditsForImages(subreddit) {
         attr.class.indexOf('link ') !== -1 &&
         attr['data-url'] &&
         (attr['data-url'].slice(-4) === '.jpg' ||
-          attr['data-url'].slice(-4) === '.png')
+            attr['data-url'].slice(-4) === '.png')
       ) {
         imgUrls.push(attr['data-url']);
       }
@@ -37,20 +37,21 @@ module.exports = async function scrapeSubredditsForImages(subreddit) {
 
   if (!imgUrls.length) {
     throw new Error(
-      'No images to use for background.');
+        'No images to use for background.');
   }
   console.log('Image locations found.\n')
 
   console.log('Saving images for setting desktop image...\n');
   return Promise.all(
-    imgUrls.map((url) => {
-      const imgName = url.slice(0, -4).split('/').slice(-1)[0];
-      const extension = url.slice(-4);
-      const filename = `${imgName}${extension}`;
-      return new Promise(
-        resolve =>
-          request.get({ url, encoding: null })
-            .pipe(fs.createWriteStream(`${__dirname}/../data/${filename}`))
-            .on('close', () => resolve(filename)))
-    }));
+      imgUrls.map((url) => {
+        const imgName = url.slice(0, -4).split('/').slice(-1)[0];
+        const extension = url.slice(-4);
+        const filename = `${imgName}${extension}`;
+        return new Promise(
+            resolve =>
+                request.get({ url, encoding: null })
+                    .pipe(fs.createWriteStream(
+                        `${__dirname}/../data/${filename}`))
+                    .on('close', () => resolve(filename)));
+      }));
 }
