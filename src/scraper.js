@@ -8,7 +8,7 @@ const fs = require('fs');
  * @param {string} subreddit to get images from
  * @returns {Promise<string[]>} names of images scraped from Reddit
  */
-module.exports = async function scrapeSubredditsForImages(subreddit) {
+module.exports = async function scrapeSubredditPageForImages(subreddit) {
   console.log('querying Reddit for HTML...');
   const { data } = await axios.get(
       `https://old.reddit.com/r/${subreddit}`);
