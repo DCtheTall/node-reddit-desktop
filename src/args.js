@@ -41,6 +41,11 @@ function getOfflineFilepath() {
   const dataDir = `${__dirname}/../data/`;
   const cachedImgs = fs.readdirSync(dataDir).map(
       fname => dataDir + fname);
+  if (cachedImgs.length === 0) {
+    throw new Error(
+        'You must have at least one image in the '
+          + 'data/ directory to run in offline mode.')
+  }
   const i = Math.round(cachedImgs.length * Math.random());
   return cachedImgs[i];
 }

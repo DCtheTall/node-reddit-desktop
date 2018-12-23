@@ -31,6 +31,10 @@ You cannot provide any subreddits with this option.
 node index.js --path ./data/<example>.png
 ```
 
+4. `--offline`: Select an image from the data/ directory in the project's root.
+If you have not run the scraper with the `--cache` option the program will throw
+an Error.
+
 ## License
 
 This code is free for use under an MIT license. This code is offered as is without
